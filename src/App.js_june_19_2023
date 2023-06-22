@@ -5,7 +5,7 @@ import Home from    './Home';
 //import About from   './About';
 import Create from './Create.js'
 import MyListedItems from './MyListedItems.js'
-import MyPurchases from './MyPurchases.js'
+//import MyPurchases from './MyPurchases.js'
 //import Navigation from './Navigation.js'
 import Web3 from 'web3'
 import NFTAbi from './NFT.json'
@@ -20,8 +20,8 @@ import { useEffect } from 'react'
 import { Row, Col, Card } from 'react-bootstrap'
 const cors = require('cors')
 
-const projectId = 'XXXXXXXXXXXXX';   //(Step 3. Place the project id from your infura project)
-const projectSecret = 'XXXXXXXXX';  //(Step 4. Place the project_secrect from your infura project)
+const projectId = '';   //(Step 3. Place the project id from your infura project)
+const projectSecret = '';  //(Step 4. Place the project_secrect from your infura project)
 
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
 
@@ -53,7 +53,7 @@ class App extends Component {
 
     async loadBlockchainData(){
 
-        const web3 = new Web3(new Web3.providers.HttpProvider("http://ec2-35-91-48-182.us-west-2.compute.amazonaws.com:8545"))
+        const web3 = new Web3(new Web3.providers.HttpProvider("http://ec2-54-245-50-222.us-west-2.compute.amazonaws.com:8545"))
 
         this.setState( { web3 } )
         var account;
@@ -155,9 +155,7 @@ render() {
                 <Route exact path='/create' element={< Create marketplace={this.state.Marketplacecontract} nft={this.state.contract} account={this.state.account}/>}></Route>
 
                 <Route exact path='/my-listed-items' element={< MyListedItems />}></Route>
-              <Route exact path="/my-purchases" element={
-                <MyPurchases marketplace={this.state.Marketplacecontract} nft={this.state.contract} account={this.state.account} />
-              } />
+
 
             </Routes>
 	  )} 

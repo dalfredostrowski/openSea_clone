@@ -5,7 +5,7 @@ import Home from    './Home';
 //import About from   './About';
 import Create from './Create.js'
 import MyListedItems from './MyListedItems.js'
-import MyPurchases from './MyPurchases.js'
+//import MyPurchases from './MyPurchases.js'
 //import Navigation from './Navigation.js'
 import Web3 from 'web3'
 import NFTAbi from './NFT.json'
@@ -20,8 +20,8 @@ import { useEffect } from 'react'
 import { Row, Col, Card } from 'react-bootstrap'
 const cors = require('cors')
 
-const projectId = 'XXXXXXXXXXXXX';   //(Step 3. Place the project id from your infura project)
-const projectSecret = 'XXXXXXXXX';  //(Step 4. Place the project_secrect from your infura project)
+const projectId = 'XXXXXXXXXXXXXXXXXXXXXXXXXX';   //(Step 3. Place the project id from your infura project)
+const projectSecret = 'XXXXXXXXXXXXXXXXXXXXXXXXXXX';  //(Step 4. Place the project_secrect from your infura project)
 
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
 
@@ -40,7 +40,7 @@ const client  = create({
 
 //import './App.css';
 class App extends Component {
-    //const [loading, setLoading] = useState(true)
+
     state = { votes: '' }
     componentWillMount(){
         this.loadBlockchainData()
@@ -53,7 +53,7 @@ class App extends Component {
 
     async loadBlockchainData(){
 
-        const web3 = new Web3(new Web3.providers.HttpProvider("http://ec2-35-91-48-182.us-west-2.compute.amazonaws.com:8545"))
+        const web3 = new Web3(new Web3.providers.HttpProvider("http://ec2-34-219-95-27.us-west-2.compute.amazonaws.com:8545"))
 
         this.setState( { web3 } )
         var account;
@@ -65,9 +65,15 @@ class App extends Component {
         })
 
         var account2;
-        web3.eth.getAccounts().then((f) => {
+
+
+
+         web3.eth.getAccounts().then((f) => {
             account2 = f[1];
         })
+
+
+
 
         console.log("account")
         const networkId = await web3.eth.net.getId();
@@ -76,9 +82,9 @@ class App extends Component {
         //this.setState( { account : account })
         this.setState( { account : accounts[0] })
         this.setState( { account2 : accounts[1] })
-        let jsonData = require('./NFT.json');
+      let jsonData = require('./NFT.json');
         var networkKey =  Object.keys(jsonData['networks'])[Object.keys(jsonData.networks).length-1]
-        console.log(networkKey)
+     console.log(networkKey)
         console.log(jsonData['networks'][networkKey]["address"] )
         console.log("1 get ID based solution")
         console.log(networkId)
@@ -98,10 +104,7 @@ class App extends Component {
         const Marketplacecontract = new web3.eth.Contract(Marketplace.abi);
         Marketplacecontract.options.address = Marketplace['networks'][networkId]["address"]
         this.setState( { Marketplacecontract })
-      //  setLoading(false)
-        this.setState( { loading : false })  
-
-    }
+        }
 
     constructor(props){
         super(props)
@@ -137,32 +140,16 @@ render() {
                     <Header />
                 </>
            </div>
-         
- <div>
-          {this.state.loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
-              <Spinner animation="border" style={{ display: 'flex' }} />
-              <p className='mx-3 my-0'>Awaiting Blockchain connection...</p>
-            </div>
-          ) : (
-
-
-
-
-
-		<Routes>
+            <Routes>
                 <Route  path='/' element={< Home marketplace={this.state.Marketplacecontract} nft={this.state.contract} account={this.state.account} account2={this.state.account2} />}></Route>
                 <Route exact path='/create' element={< Create marketplace={this.state.Marketplacecontract} nft={this.state.contract} account={this.state.account}/>}></Route>
 
                 <Route exact path='/my-listed-items' element={< MyListedItems />}></Route>
-              <Route exact path="/my-purchases" element={
-                <MyPurchases marketplace={this.state.Marketplacecontract} nft={this.state.contract} account={this.state.account} />
-              } />
+
 
             </Routes>
-	  )} 
-   </div>
-</BrowserRouter>
+
+       </BrowserRouter>
    );
 }
 }
